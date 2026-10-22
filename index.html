@@ -646,5 +646,43 @@ if(OWN.on){const b=document.createElement("button");b.className="btn";b.textCont
  b.onclick=ownerList;document.body.appendChild(b)}
 renderChips();renderGrid();badges();
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. Find your existing checkout form or complete order button
+    // This looks for any form or fallback button on your Master Seller page
+    const checkoutForm = document.querySelector("form") || document.querySelector("button[type='submit']");
+    
+    if (checkoutForm) {
+        checkoutForm.addEventListener("click", function(event) {
+            // Prevent the default form reload if it's inside a form tag
+            if(checkoutForm.tagName === "FORM") event.preventDefault();
+            
+            // 2. Safely capture the delivery details entered by your user
+            // If your HTML inputs use different names/classes, JavaScript will fall back gracefully
+            const name = document.getElementById("customerName")?.value  document.querySelector("input[type='text']")?.value  "Customer";
+            const phone = document.getElementById("customerPhone")?.value  document.querySelector("input[type='tel']")?.value  "Not provided";
+            const address = document.getElementById("customerAddress")?.value  document.querySelector("textarea")?.value  "Not provided";
+            const city = document.getElementById("customerCity")?.value || "Not provided";
 
+            // 3. ⚠️ CHANGE THIS: Your exact WhatsApp business number with country code (NO spaces, NO plus sign)
+            // Example: "919876543210" (91 is India code)
+            const myWhatsAppNumber = "919745442420"; 
+
+            // 4. Arrange the text layout for your WhatsApp chat window
+            const messageText = 🛍️ *New Order from Master Seller* \n\n +
+                                👤 *Customer Name:* ${name}\n +
+                                📞 *Phone Number:* ${phone}\n\n +
+                                📍 *Delivery Location:* \n +
+                                ${address}, ${city}\n\n +
+                                💬 Please confirm my delivery details!;
+
+            // 5. Build the secure URL link and execute the redirect
+            const encodedMessage = encodeURIComponent(messageText);
+            const finalWhatsAppUrl = https://wa.me{myWhatsAppNumber}?text=${encodedMessage};
+            
+            window.open(finalWhatsAppUrl, '_blank');
+        });
+    }
+});
+</script>
 </body></html>
